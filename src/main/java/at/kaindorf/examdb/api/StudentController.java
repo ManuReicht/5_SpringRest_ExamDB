@@ -34,7 +34,7 @@ public class StudentController {
     @GetMapping("/class/{classid}/all")
     public ResponseEntity<List<Student>> getAllStudents(@PathVariable("classid") int classid) {
         Long classId = Long.valueOf(classid);
-        return ResponseEntity.of(Optional.of(studentRepo.findAllByClassname(classnameRepo.findById(classId).get())));
+        return ResponseEntity.of(Optional.of(studentRepo.findAllByClassnameOrderByLastnameAscFirstnameAsc(classnameRepo.findById(classId).get())));
     }
 
 }

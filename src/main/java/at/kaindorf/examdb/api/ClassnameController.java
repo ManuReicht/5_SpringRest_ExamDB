@@ -9,8 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -24,7 +26,10 @@ public class ClassnameController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Classname>> getAllClassnames(){
-        return ResponseEntity.of(Optional.of(classnameRepo.findAll()));
+        return ResponseEntity.of(Optional.of(classnameRepo.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Classname::getClassname))
+                .collect(Collectors.toList())));
     }
 }
 

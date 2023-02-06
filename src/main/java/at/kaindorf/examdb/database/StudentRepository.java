@@ -11,5 +11,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findAllByClassname(Long classid);
 
     Long countAllByClassname(Classname classname);
-    List<Student> findAllByClassname(Classname classname);
+    List<Student> findAllByClassnameOrderByLastnameAscFirstnameAsc(Classname classname);
 }
