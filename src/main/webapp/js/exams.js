@@ -8,7 +8,6 @@ function init() {
     isInit = true;
     getAllClassnames();
     getStudentsOfClassFirstPage();
-
 }
 
 function getAllClassnames() {
