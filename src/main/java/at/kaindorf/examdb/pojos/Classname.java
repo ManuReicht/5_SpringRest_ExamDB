@@ -7,6 +7,7 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 public class Classname {
     @Id
+    @Column(name = "class_id")
     private Long classId;
     @Column(length = 10)
     private String classname;

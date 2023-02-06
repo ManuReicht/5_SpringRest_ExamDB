@@ -1,11 +1,11 @@
 package at.kaindorf.examdb.pojos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -15,11 +15,17 @@ import java.time.LocalDate;
 @Entity
 public class Exam {
     @Id
+    @Column(name = "exam_id")
     private Long examId;
+    @Column(name = "dateofexam")
     private LocalDate dateOfExam;
     private int duration;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "student", nullable = false)
+    @ToString.Exclude
+    @JsonIgnore
     private Student student;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "subject", nullable = false)
     private Subject subject;
 }
