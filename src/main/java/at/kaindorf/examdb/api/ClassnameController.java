@@ -1,35 +1,30 @@
 package at.kaindorf.examdb.api;
 
 import at.kaindorf.examdb.database.ClassnameRepository;
-import at.kaindorf.examdb.database.StudentRepository;
 import at.kaindorf.examdb.pojos.Classname;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
 @RequestMapping(value = "/classname", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins="*")
 public class ClassnameController {
-    @Autowired
-    private ClassnameRepository classnameRepo;
-    @Autowired
-    private StudentRepository studentRepo;
+    private final ClassnameRepository classnameRepo;
+    public ClassnameController(ClassnameRepository classnameRepository) {
+        this.classnameRepo = classnameRepository;
+    }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Classname>> getAllClassnames(){
-        return ResponseEntity.of(Optional.of(classnameRepo.findAll()
-                .stream()
-                .sorted(Comparator.comparing(Classname::getClassname))
-                .collect(Collectors.toList())));
+    public ResponseEntity<List<Classname>> getAllClassnames() {
+        log.debug("REST request to get all Classnames");
+        List<Classname> classnames = classnameRepo.findAll(Sort.by("classname"));
+        return classnames.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(classnames);
     }
 }
 

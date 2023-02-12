@@ -3,23 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Exam</title>
-    <script src="js/exams.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script defer src="js/exams.js"></script>
 </head>
-<body onload="init()">
+<body>
 <div class="container">
     <h1>ExamView</h1>
-    <h3>Classnames:</h3>
-    <select class="form-select" id="allClassnames" onchange="getStudentsOfClassFirstPage()"></select>
-    <h3>Students of class:</h3>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination" id="pageButtons"></ul>
-    </nav>
-    <table id="tblStudentsOfClass" class="table"></table>
-    <h3>Exams of Student:</h3>
-    <table id="tblExamsOfStudent" class="table"></table>
- </div>
+    <hr>
+    <div class="classes">
+        <h3>Classnames:</h3>
+        <select class="form-select" id="classNameSelection" onchange="loadStudentsOfClass(this.value, 0)">
+            <option disabled selected value="0">--- Select Class ---</option>
+        </select>
+    </div>
+    <hr>
+    <div class="students">
+        <h3 id="studentsofclass">Students of class:</h3>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" id="studentPagination"></ul>
+        </nav>
+        <table class="table" id="tblStudentsOfClass"></table>
+    </div>
+    <hr>
+    <h3 id="examsofstudent">Exams of Student:</h3>
+    <div class="exams">
+        <table class="table" id="tblExamsOfStudent"></table>
+    </div>
+</div>
 </body>
 </html>

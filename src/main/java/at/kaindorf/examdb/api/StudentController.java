@@ -5,14 +5,13 @@ import at.kaindorf.examdb.database.StudentRepository;
 import at.kaindorf.examdb.pojos.Student;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -21,20 +20,17 @@ import java.util.Optional;
 @RequestMapping(value = "/student", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins="*")
 public class StudentController {
-    @Autowired
-    private ClassnameRepository classnameRepo;
-    @Autowired
-    private StudentRepository studentRepo;
+    private final StudentRepository studentRepo;
 
-    @GetMapping("/class/{classid}/count")
-    public ResponseEntity<Long> getStudentsCountOfClass(@PathVariable("classid") int classid){
-        Long classId = Long.valueOf(classid);
-        return ResponseEntity.of(Optional.of(studentRepo.countAllByClassname(classnameRepo.findById(classId).get())));
-    }
-    @GetMapping("/class/{classid}/all")
-    public ResponseEntity<List<Student>> getAllStudents(@PathVariable("classid") int classid) {
-        Long classId = Long.valueOf(classid);
-        return ResponseEntity.of(Optional.of(studentRepo.findAllByClassnameOrderByLastnameAscFirstnameAsc(classnameRepo.findById(classId).get())));
+    public StudentController(StudentRepository studentRepo) {
+        this.studentRepo = studentRepo;
     }
 
+    @GetMapping("/{classId}")
+    public ResponseEntity<Iterable<Student>> getAllStudentsOfClassPaginated(
+            @PathVariable("classId") Long classId,
+            @RequestParam(name="pageNo", defaultValue = "0") int pageNo) {
+        Pageable page = PageRequest.of(pageNo, 10);
+        return ResponseEntity.of(Optional.of(studentRepo.findAllByClassname_ClassId(classId, page)));
+    }
 }
