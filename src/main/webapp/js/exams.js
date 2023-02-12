@@ -128,7 +128,9 @@ function addUpdateExam(){
     let subjectId = document.getElementById('subjectSelection').value
     let dateOfExam = document.getElementById('dateOfExam').value
     let duration = document.getElementById('duration').value
+
     document.getElementById('examId').value === '' ? addExam(subjectId, dateOfExam, duration) : updateExam(subjectId, dateOfExam, duration)
+
     document.getElementById('examId').value = ''
     document.getElementById('subjectSelection').value = 0
     document.getElementById('dateOfExam').value = ''
@@ -144,12 +146,6 @@ function initUpdateExam(examId, dateOfExam, duration, subjectId) {
     document.getElementById('duration').value = duration
 }
 function addExam(subjectId, dateOfExam, duration){
-    /*if (!(document.getElementById('subjectSelection').value === 0 &&
-        document.getElementById('examDate').validity.valid &&
-        document.getElementById('examDuration').validity.valid)) {
-        alert('Please check your input');
-        return;
-    }*/
     let exam = {
         studentId: selectedStudent,
         subjectId: subjectId,
