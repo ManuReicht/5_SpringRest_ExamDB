@@ -113,7 +113,7 @@ function loadExamsOfStudent(studentId) {
                             <td>${exam.dateOfExam}</td>
                             <td>${exam.duration}</td>
                             <td>
-                                <button type="button" class="btn btn-primary" onclick="initUpdateExam(${exam.examId},\' ${exam.dateOfExam}\', ${exam.duration}, ${exam.subject.subjectId})">Update</button>
+                                <button type="button" class="btn btn-primary" onclick="initUpdateExam(${exam.examId},\'${exam.dateOfExam}\',${exam.duration},${exam.subject.subjectId})">Update</button>
                                 <button type="button" class="btn btn-danger" onclick="removeExam(${exam.examId})">Remove</button>
                             </td>
                         </tr>`)
@@ -130,16 +130,11 @@ function addUpdateExam(){
     let duration = document.getElementById('duration').value
 
     document.getElementById('examId').value === '' ? addExam(subjectId, dateOfExam, duration) : updateExam(subjectId, dateOfExam, duration)
-
-    document.getElementById('examId').value = ''
-    document.getElementById('subjectSelection').value = 0
-    document.getElementById('dateOfExam').value = ''
-    document.getElementById('duration').value = ''
+    clearExamActions()
 }
 
 function initUpdateExam(examId, dateOfExam, duration, subjectId) {
-    console.log(dateOfExam);
-    console.log(new Date(dateOfExam))
+    dateOfExam = dateOfExam.trim().replaceAll(' ', '/')
     document.getElementById('examId').value = examId
     document.getElementById('subjectSelection').value = subjectId
     document.getElementById('dateOfExam').valueAsDate = new Date(dateOfExam)
@@ -211,6 +206,17 @@ function disableExamActions(disabled){
     document.getElementById('dateOfExam').disabled = disabled
     document.getElementById('duration').disabled = disabled
     document.getElementById('btnExamAction').disabled = disabled
+    document.getElementById('examId').value = ''
+    document.getElementById('subjectSelection').value = 0
+    document.getElementById('dateOfExam').value = ''
+    document.getElementById('duration').value = ''
+}
+
+function clearExamActions(){
+    document.getElementById('examId').value = ''
+    document.getElementById('subjectSelection').value = 0
+    document.getElementById('dateOfExam').value = ''
+    document.getElementById('duration').value = ''
 }
 
 init()
