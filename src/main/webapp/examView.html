@@ -35,6 +35,33 @@
     <div class="exams">
         <table class="table" id="tblExamsOfStudent"></table>
     </div>
+    <hr>
+    <h3>Add/Update Exam</h3>
+    <div class="examAction">
+        <table>
+            <thead>
+            <tr>
+                <th>ExamId</th>
+                <th>Subject</th>
+                <th>Date of Exam</th>
+                <th>Duration</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input disabled class="form-control" id="examId" type="text"></td>
+                <td>
+                    <select class="form-select" id="subjectSelection" required>
+                        <option disabled selected value="0">--- Select Subject ---</option>
+                    </select>
+                </td>
+                <td><input id="dateOfExam" class="form-control" type="date" required></td>
+                <td><input id="duration" class="form-control" type="number" required></td>
+                <td><button id="btnExamAction" type="button" class="btn btn-success" onclick="addUpdateExam()">Submit</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

@@ -21,13 +21,13 @@ import java.util.Optional;
 @RequestMapping(value = "/subject", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins="*")
 public class SubjectController {
-    @Autowired
-    private StudentRepository studentRepo;
-    @Autowired
-    private ExamRepository examRepo;
-    @Autowired
-    private SubjectRepository subjectRepo;
-    @GetMapping("/all")
+    private final SubjectRepository subjectRepo;
+
+    public SubjectController(SubjectRepository subjectRepo) {
+        this.subjectRepo = subjectRepo;
+    }
+
+    @GetMapping
     public ResponseEntity<List<Subject>> getAllSubjects(){
         return ResponseEntity.of(Optional.of(subjectRepo.findAll()));
     }
