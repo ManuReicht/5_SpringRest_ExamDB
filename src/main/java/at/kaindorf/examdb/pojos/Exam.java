@@ -19,7 +19,7 @@ public class Exam {
     private Long examId;
     @Column(name = "dateofexam")
     private LocalDate dateOfExam;
-    private int duration;
+    private Integer duration;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "student", nullable = false)
     @ToString.Exclude
