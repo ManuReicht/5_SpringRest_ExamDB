@@ -96,8 +96,8 @@ public class ExamController {
     }
 
     private Exam convertDTOToExam(ExamDTO examDTO) {
-        Student student = studentRepo.findById(examDTO.getStudentId()).orElse(null);
-        Subject subject = subjectRepo.findById(examDTO.getSubjectId()).orElse(null);
+        Student student = studentRepo.findById(examDTO.getStudentId() == null ? -1 : examDTO.getStudentId()).orElse(null);
+        Subject subject = subjectRepo.findById(examDTO.getSubjectId() == null ? -1 : examDTO.getSubjectId()).orElse(null);
         return new Exam(examDTO.getExamId(), examDTO.getDateOfExam(), examDTO.getDuration(), student, subject);
     }
 }
