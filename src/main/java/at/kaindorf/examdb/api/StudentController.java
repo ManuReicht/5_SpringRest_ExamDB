@@ -22,7 +22,7 @@ public class StudentController {
         this.studentRepo = studentRepo;
     }
 
-    @GetMapping("/{classId}")
+    @GetMapping("/class/{classId}")
     public ResponseEntity<Iterable<Student>> getAllStudentsOfClassPaginated(
             @PathVariable("classId") Long classId,
             @RequestParam(name="pageNo", defaultValue = "0") int pageNo) {

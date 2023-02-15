@@ -26,7 +26,7 @@ function loadClassNames() {
 }
 function loadSubjects(){
     let selection = document.getElementById('subjectSelection')
-    fetch('./subject')
+    fetch('./subject/all')
         .then(response => {
             response.status === 200 ? response.json().then(data => {
                 subjects = data
@@ -43,7 +43,7 @@ function loadSubjects(){
 
 function loadStudentsOfClass(classId, pageNo) {
     disableExamActions(true)
-    fetch('./student/' + classId + '?pageNo=' + pageNo)
+    fetch('./student/class/' + classId + '?pageNo=' + pageNo)
         .then(response => response.json())
         .then(data => {
             console.log(data)
@@ -86,7 +86,7 @@ function loadStudentsOfClass(classId, pageNo) {
 function loadExamsOfStudent(studentId) {
     disableExamActions(false)
     selectedStudent = studentId
-    fetch("./exam/" + studentId)
+    fetch("./exam/student/" + studentId)
         .then(function (response) {
             if (response.status !== 200) {
                 console.log('Looks like there was a problem. Status Code: ' + response.status)
@@ -147,7 +147,7 @@ function addExam(subjectId, dateOfExam, duration){
         dateOfExam: dateOfExam,
         duration: duration
     }
-    fetch('./exam', {
+    fetch('./exam/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -174,7 +174,7 @@ function updateExam(subjectId, dateOfExam, duration){
         dateOfExam: dateOfExam,
         duration: duration
     }
-    fetch('./exam', {
+    fetch('./exam/update', {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
@@ -191,7 +191,7 @@ function updateExam(subjectId, dateOfExam, duration){
     })
 }
 function removeExam(examId) {
-    fetch('./exam/' + examId, {
+    fetch('./exam/delete' + examId, {
         method: 'DELETE'
     })
         .then(response => {

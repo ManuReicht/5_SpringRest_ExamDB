@@ -1,9 +1,9 @@
 package at.kaindorf.examdb.api;
 
+import at.kaindorf.examdb.beans.ExamDTO;
 import at.kaindorf.examdb.database.ExamRepository;
 import at.kaindorf.examdb.database.StudentRepository;
 import at.kaindorf.examdb.database.SubjectRepository;
-import at.kaindorf.examdb.data.JsonExam;
 import at.kaindorf.examdb.pojos.Exam;
 import at.kaindorf.examdb.pojos.Student;
 import at.kaindorf.examdb.pojos.Subject;
@@ -34,38 +34,40 @@ public class ExamController {
         this.subjectRepo = subjectRepo;
     }
 
-    @GetMapping("/{studentId}")
-    public ResponseEntity<List<Exam>> getExamsOfStudent(@PathVariable("studentId") Long studentId){
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<Exam>> getExamsOfStudent(@PathVariable("studentId") Long studentId) {
         return ResponseEntity.of(Optional.of(examRepo.findExamsByStudent_StudentIdOrderByDateOfExam(studentId)));
     }
-    @PostMapping
-    public ResponseEntity<Exam> addExam(@RequestBody JsonExam createExam){
-        createExam.setExamId(examRepo.maxExamId() + 1l);
+
+    @PostMapping("/add")
+    public ResponseEntity<Exam> addExam(@RequestBody ExamDTO createExam) {
+        createExam.setExamId(examRepo.getMaxExamId() + 1l);
         Student student = studentRepo.findById(createExam.getStudentId()).orElse(null);
         Subject subject = subjectRepo.findById(createExam.getSubjectId()).orElse(null);
-        Exam exam = convertJsonExamToExam(createExam);
+        Exam exam = convertDTOToExam(createExam);
 
         examRepo.save(exam);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
+        URI location = ServletUriComponentsBuilder.fromCurrentServletMapping()
+                .path("/exam/{id}")
                 .buildAndExpand(exam.getExamId())
                 .toUri();
 
         return ResponseEntity.created(location).build();
     }
-    @PatchMapping
-    public ResponseEntity<Exam> updateExam(@RequestBody JsonExam patchExam){
-        Optional<Exam> optExam = examRepo.findById(patchExam.getExamId());
-        Exam patch = convertJsonExamToExam(patchExam);
 
-        if (optExam.isEmpty()) {
+    @PatchMapping("/update")
+    public ResponseEntity<Exam> updateExam(@RequestBody ExamDTO patchExam) {
+        Optional<Exam> optExam = examRepo.findById(patchExam.getExamId());
+        Exam patch = convertDTOToExam(patchExam);
+
+        if (!optExam.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
         try {
             Exam exam = optExam.get();
-            for (Field field: Exam.class.getDeclaredFields()) {
+            for (Field field : Exam.class.getDeclaredFields()) {
                 field.setAccessible(true);
                 Object value = ReflectionUtils.getField(field, patch);
                 if (value != null && !value.toString().trim().isEmpty()) {
@@ -80,7 +82,7 @@ public class ExamController {
         }
     }
 
-    @DeleteMapping("/{examId}")
+    @DeleteMapping("/delete/{examId}")
     public ResponseEntity<Exam> deleteExam(@PathVariable Long examId) {
         Optional<Exam> optExam = examRepo.findById(examId);
 
@@ -93,9 +95,9 @@ public class ExamController {
         return ResponseEntity.notFound().build();
     }
 
-    private Exam convertJsonExamToExam(JsonExam jsonExam) {
-        Student student = studentRepo.findById(jsonExam.getStudentId()).orElse(null);
-        Subject subject = subjectRepo.findById(jsonExam.getSubjectId()).orElse(null);
-        return new Exam(jsonExam.getExamId(), jsonExam.getDateOfExam(), jsonExam.getDuration(), student, subject);
+    private Exam convertDTOToExam(ExamDTO examDTO) {
+        Student student = studentRepo.findById(examDTO.getStudentId()).orElse(null);
+        Subject subject = subjectRepo.findById(examDTO.getSubjectId()).orElse(null);
+        return new Exam(examDTO.getExamId(), examDTO.getDateOfExam(), examDTO.getDuration(), student, subject);
     }
 }

@@ -1,11 +1,8 @@
 package at.kaindorf.examdb.api;
 
-import at.kaindorf.examdb.database.ExamRepository;
-import at.kaindorf.examdb.database.StudentRepository;
 import at.kaindorf.examdb.database.SubjectRepository;
 import at.kaindorf.examdb.pojos.Subject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +24,7 @@ public class SubjectController {
         this.subjectRepo = subjectRepo;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Subject>> getAllSubjects(){
         return ResponseEntity.of(Optional.of(subjectRepo.findAll()));
     }
