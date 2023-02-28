@@ -136,9 +136,9 @@ function addUpdateExam(){
 function initUpdateExam(examId, dateOfExam, duration, subjectId) {
     dateOfExam = dateOfExam.trim().replaceAll(' ', '/')
     document.getElementById('examId').value = examId
-    document.getElementById('subjectSelection').value = subjectId
-    document.getElementById('dateOfExam').valueAsDate = new Date(dateOfExam)
-    document.getElementById('duration').value = duration
+    //document.getElementById('subjectSelection').value = subjectId
+    //document.getElementById('dateOfExam').valueAsDate = new Date(dateOfExam)
+    //document.getElementById('duration').value = duration
 }
 function addExam(subjectId, dateOfExam, duration){
     let exam = {
@@ -165,15 +165,17 @@ function addExam(subjectId, dateOfExam, duration){
         .catch(error => console.error(error));
 }
 
-function updateExam(subjectId, dateOfExam, duration){
+function updateExam(subjectId, dateOfExam, duration) {
     let examId = document.getElementById('examId').value
     let exam = {
         examId: examId,
-        studentId: selectedStudent,
-        subjectId: subjectId,
-        dateOfExam: dateOfExam,
-        duration: duration
+        studentId: null,
+        subjectId: subjectId == "0" ? null : subjectId,
+        dateOfExam: dateOfExam == "" ? null : dateOfExam,
+        duration: duration == "" ? null : duration
     }
+    console.log('update: ')
+    console.log(JSON.stringify(exam))
     fetch('./exam/update', {
         method: 'PATCH',
         headers: {
